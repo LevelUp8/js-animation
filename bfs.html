@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<style>
+#bsfMainContainer {
+  width: 600px;
+  height: 80px;
+  position: relative;
+  font-size: 18px;
+}
+#bsfContainer {
+  width: 500px;
+  height: 60px;
+  position: relative;
+  border-radius: 15px;
+  border: 5px solid black;
+  background: yellow;
+}
+.bsfAnimation {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 5px solid #6a7ec7;
+  position: absolute;
+  right: 0px;
+  background-color: #4797ec;
+  visibility: hidden;
+}
+.bsfCenterNumber{
+  position: relative;
+  top: 10px;
+  left: 10px;
+}
+#endMessage{
+  visibility: hidden;
+}
+</style>
+<body>
+
+<p>
+  <button id="bfsButton" onclick="bfsMove()">Next</button> 
+</p>
+<div id ="bsfMainContainer">
+  <div id ="bsfContainer">
+      <div id="bsf_el_1" class="bsfAnimation"><span class="bsfCenterNumber">6</span></div>
+      
+      <div id="bsf_el_2" class="bsfAnimation"><span class="bsfCenterNumber">1</span></div>
+      <div id="bsf_el_3" class="bsfAnimation"><span class="bsfCenterNumber">3</span></div>
+      <div id="bsf_el_4" class="bsfAnimation"><span class="bsfCenterNumber">4</span></div>
+      <div id="bsf_el_5" class="bsfAnimation"><span class="bsfCenterNumber">11</span></div>
+      <div id="bsf_el_6" class="bsfAnimation"><span class="bsfCenterNumber">13</span></div>
+      
+      <div id="bsf_el_7" class="bsfAnimation"><span class="bsfCenterNumber">8</span></div>
+      <div id="bsf_el_8" class="bsfAnimation"><span class="bsfCenterNumber">12</span></div>
+      <div id="bsf_el_9" class="bsfAnimation"><span class="bsfCenterNumber">5</span></div>
+      <div id="bsf_el_10" class="bsfAnimation"><span class="bsfCenterNumber">2</span></div>
+      
+      <div id="bsf_el_11" class="bsfAnimation"><span class="bsfCenterNumber">7</span></div>
+      <div id="bsf_el_12" class="bsfAnimation"><span class="bsfCenterNumber">9</span></div>
+      <div id="bsf_el_13" class="bsfAnimation"><span class="bsfCenterNumber">10</span></div>
+  </div>
+  <div id ="endMessage">Презентацията приключи. Натисни бутона за да се рестартира</div>
+</div>
+
+<script>
+let step = 0;
+let id = null;
+let initialArr = [];
+function bfsMove() {
+
+  let elem1 = document.getElementById("bsf_el_1");
+
+  let elem2 = document.getElementById("bsf_el_2");
+  let elem3 = document.getElementById("bsf_el_3");
+  let elem4 = document.getElementById("bsf_el_4");
+  let elem5 = document.getElementById("bsf_el_5");
+  let elem6 = document.getElementById("bsf_el_6");
+  
+  let elem7 = document.getElementById("bsf_el_7");
+  let elem8 = document.getElementById("bsf_el_8");
+  let elem9 = document.getElementById("bsf_el_9");
+  let elem10 = document.getElementById("bsf_el_10");
+  
+  let elem11 = document.getElementById("bsf_el_11");
+  let elem12 = document.getElementById("bsf_el_12");
+  let elem13 = document.getElementById("bsf_el_13");
+
+  initialArr = [[elem1], [elem2, elem3, elem4, elem5, elem6], [elem7, elem8, elem9, elem10], [elem11, elem12, elem13]];
+  
+  if(step == 4)
+  {
+
+    let endMessage = document.getElementById("endMessage");
+    endMessage.style.visibility = "visible";
+    
+    let previousArr = [];
+
+    previousArr = initialArr[initialArr.length - 1];
+    for(let i=0; i<previousArr.length; i++ )
+    {
+       previousArr[i].style.visibility = "hidden";
+    }
+    
+    step = 0;
+  }
+  else
+  {
+      let endMessage = document.getElementById("endMessage");
+      endMessage.style.visibility = "hidden";
+      bfsMoveStep();
+  }
+
+}
+
+
+
+function bfsMoveStep() {
+  let btn = document.getElementById("bfsButton");
+  btn.setAttribute("disabled", true);
+  
+  let arrWithElements = [];
+  let previousArr = [];
+  if(step > 0)
+  {
+     previousArr = initialArr[step - 1];
+     for(let i=0; i<previousArr.length; i++ )
+     {
+       previousArr[i].style.visibility = "hidden";
+     }
+  }
+  
+  
+  arrWithElements = initialArr[step];
+  
+  for(let i=0; i<arrWithElements.length; i++ )
+  {
+    arrWithElements[i].style.visibility = "visible";
+  }
+
+  let pos = 0;
+  
+  for(let i=0; i<arrWithElements.length; i++ )
+  {
+    arrWithElements[i].style.right = pos + (50 * i);
+  }
+  
+  clearInterval(id);
+  id = setInterval(frame, 3);
+  function frame() {
+    if (pos == 490 - (arrWithElements.length * 50)) {
+      clearInterval(id);
+      btn.removeAttribute("disabled");
+      step++;
+    } else {
+       pos++;
+       for(let i=0; i<arrWithElements.length; i++ )
+       {
+         arrWithElements[i].style.right = (pos + (50 * i)) + 'px';
+       }
+    }
+  }
+}
+</script>
+
+</body>
+</html>
+
